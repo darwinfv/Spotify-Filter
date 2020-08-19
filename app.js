@@ -12,7 +12,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/hook', function(req, res) {
-    console.log(req.body);
+    console.log(req.params);
 });
 
 app.use(function(err, req, res, next) {
