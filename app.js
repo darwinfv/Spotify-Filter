@@ -12,7 +12,8 @@ app.get('/', function(req, res) {
 });
 
 app.get('/hook', function(req, res) {
-    let body = req.body;
+    let body = req.query;
+    console.log(body);
     if (body['hub.verify_token'] == 'pandabear') {
         res.send(body['hub.challenge']);
     }
