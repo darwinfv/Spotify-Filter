@@ -12,7 +12,8 @@ app.get('/', function(req, res) {
 });
 
 app.get('/hook', function(req, res) {
-    console.log(req.params);
+    console.log(req.query);
+    res.send("Body");
 });
 
 app.use(function(err, req, res, next) {
