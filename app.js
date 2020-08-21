@@ -26,6 +26,7 @@ app.get('/hook', function(req, res) {
 
 app.post('/hook', function(req, res) {
     console.log(req.body);
+    console.log(req.body['entry'][0]['changes'];
     res.send("A");
 });
 
