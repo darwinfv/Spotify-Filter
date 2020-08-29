@@ -1,0 +1,22 @@
+{
+  "name": "spotify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darwinfv/Messenger-Bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/darwinfv/Messenger-Bot/issues"
+  },
+  "homepage": "https://github.com/darwinfv/Messenger-Bot#readme",
+  "dependencies": {
+    "request": "^2.88.2"
+  }
+}
