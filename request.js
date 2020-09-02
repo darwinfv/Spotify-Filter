@@ -1,44 +1,24 @@
-var express = require('express'); // Express web server framework
-var request = require('request'); // "Request" library
-var querystring = require('querystring');
+var express = require('express');
+var request = require('request');
 
-var client_id = 'eea101d873434d49b7943928d46d0248'; // Your client id
-var client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580'; // Your secret
-var redirect_uri = 'https://example.com/callback'; // Your redirect uri
+var client_id = 'eea101d873434d49b7943928d46d0248';
+var client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580';
+var redirect_uri = 'https://infinite-mesa-97394.herokuapp.com/access';
 
 var app = express();
 
-// app.use(express.static(__dirname + '/public'))
-  //  .use(cors())
-  //  .use(cookieParser());
-
-app.get('/login', function(req, res) {
-
-  var scope = 'user-read-private user-read-email';
-
-  res.redirect('https://accounts.spotify.com/authorize' +
-    '?response_type=code' +
-    '&client_id=' + client_id +
-    (scope ? '&scope=' + encodeURIComponent(scope) : '') +
-    '&redirect_uri=' + encodeURIComponent(redirect_uri));
-});
-
 var scopes = 'user-read-private user-read-email';
-
 var state = 'pandabear';
 
-authUrl = 'https://accounts.spotify.com/authorize' +
+authUrl = 'https://accounts.spotify.com/authorize' /+
     '?client_id=' + client_id +
     '&response_type=' + 'token' +
     '&redirect_uri=' + 'https://example.com/callback' +
     '&state=' + state +
     '&scope=' + scopes;
 
-app.get('/panda', function(req, res) {
+app.get('/login', function(req, res) {
   res.redirect(authUrl);
-  // res.redirect(authUrl, function(err, resp, body) {
-    // console.log(body);
-  // });
 });
 
 
@@ -129,6 +109,6 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-console.log('Listening on 8888');
-app.listen(8888);
+console.log('Listening on 5000');
+app.listen(5000);
 

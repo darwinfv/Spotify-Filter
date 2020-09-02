@@ -1,9 +1,10 @@
 const request = require('request');
 
-var client_id = 'eea101d873434d49b7943928d46d0248'; // Your client id
-var client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580'; // Your secret
+var client_id = 'eea101d873434d49b7943928d46d0248';
+var client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580';
 
 var scopes = 'user-read-private user-read-email';
+var state = 'pandabear';
 
 // your application requests authorization
 var authOptions = {
@@ -34,8 +35,6 @@ var authOptions = {
 //         });
 //     }
 // });
-
-var state = 'pandabear';
 
 var authUrl = 'https://accounts.spotify.com/authorize' +
     '?client_id=' + client_id +
