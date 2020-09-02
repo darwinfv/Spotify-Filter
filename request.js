@@ -8,7 +8,7 @@ var redirect_uri = 'https://infinite-mesa-97394.herokuapp.com/access';
 var app = express();
 
 var scopes = 'user-read-private user-read-email';
-var state = 'pandabear';
+var state = generateRandomString(32);
 
 authUrl = 'https://accounts.spotify.com/authorize' +
     '?client_id=' + client_id +
@@ -110,3 +110,12 @@ app.get('/refresh_token', function(req, res) {
 console.log('Listening on 5000');
 app.listen(5000);
 
+function generateRandomString(length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
