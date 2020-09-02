@@ -10,18 +10,16 @@ var app = express();
 var scopes = 'user-read-private user-read-email';
 var state = 'pandabear';
 
-authUrl = 'https://accounts.spotify.com/authorize' /+
+authUrl = 'https://accounts.spotify.com/authorize' +
     '?client_id=' + client_id +
-    '&response_type=' + 'token' +
-    '&redirect_uri=' + 'https://example.com/callback' +
+    '&response_type=' + 'code' +
+    '&redirect_uri=' + redirect_uri +
     '&state=' + state +
     '&scope=' + scopes;
 
 app.get('/login', function(req, res) {
   res.redirect(authUrl);
 });
-
-
 
 app.get('/callback', function(req, res) {
 
