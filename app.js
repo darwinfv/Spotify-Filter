@@ -35,11 +35,11 @@ var authOptions = {
 //     }
 // });
 
-state = 'pandabear';
+var state = 'pandabear';
 
-authUrl = 'https://accounts.spotify.com/authorize' +
+var authUrl = 'https://accounts.spotify.com/authorize' +
     '?client_id=' + client_id +
-    '&response_type=' + 'token' +
+    '&response_type=' + 'code' +
     '&redirect_uri=' + 'https://example.com/callback' +
     '&state=' + state +
     '&scope=' + scopes;
