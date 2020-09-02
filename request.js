@@ -1,8 +1,6 @@
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
-var cors = require('cors');
 var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
 
 var client_id = 'eea101d873434d49b7943928d46d0248'; // Your client id
 var client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580'; // Your secret
@@ -23,6 +21,24 @@ app.get('/login', function(req, res) {
     '&client_id=' + client_id +
     (scope ? '&scope=' + encodeURIComponent(scope) : '') +
     '&redirect_uri=' + encodeURIComponent(redirect_uri));
+});
+
+var scopes = 'user-read-private user-read-email';
+
+var state = 'pandabear';
+
+authUrl = 'https://accounts.spotify.com/authorize' +
+    '?client_id=' + client_id +
+    '&response_type=' + 'token' +
+    '&redirect_uri=' + 'https://example.com/callback' +
+    '&state=' + state +
+    '&scope=' + scopes;
+
+app.get('/panda', function(req, res) {
+  res.redirect(authUrl);
+  // res.redirect(authUrl, function(err, resp, body) {
+    // console.log(body);
+  // });
 });
 
 

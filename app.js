@@ -17,22 +17,35 @@ var authOptions = {
     json: true
 };
 
-request.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
+// request.post(authOptions, function(error, response, body) {
+//     if (!error && response.statusCode === 200) {
 
-        // use the access token to access the Spotify Web API
-        var token = body.access_token;
-        var options = {
-        url: 'https://api.spotify.com/v1/users/qn5qq8divhd3nw86yjkuywqus',
-        headers: {
-            'Authorization': 'Bearer ' + token
-        },
-        json: true
-        };
-        request.get(options, function(error, response, body) {
-        console.log(body);
-        });
-    }
+//         // use the access token to access the Spotify Web API
+//         var token = body.access_token;
+//         var options = {
+//         url: 'https://api.spotify.com/v1/users/qn5qq8divhd3nw86yjkuywqus',
+//         headers: {
+//             'Authorization': 'Bearer ' + token
+//         },
+//         json: true
+//         };
+//         request.get(options, function(error, response, body) {
+//         console.log(body);
+//         });
+//     }
+// });
+
+state = 'pandabear';
+
+authUrl = 'https://accounts.spotify.com/authorize' +
+    '?client_id=' + client_id +
+    '&response_type=' + 'token' +
+    '&redirect_uri=' + 'https://example.com/callback' +
+    '&state=' + state +
+    '&scope=' + scopes;
+
+request.get(authUrl, function(err, resp, body) {
+    console.log(body);
 });
 
 request.get('https://api.spotify.com/v1/me/playlists', function(err, resp, body) {
