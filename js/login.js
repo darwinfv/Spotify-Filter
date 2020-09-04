@@ -17,31 +17,35 @@ let authUrl = 'https://accounts.spotify.com/authorize' +
 let login = document.getElementById('login');
 
 chrome.storage.sync.get('code', function(data) {
-    bg.console.log(data.code);
     if (data.code) {
-        bg.console.log(data.code);
-        login.hidden = true;
+        player();
     }
-
 });
 
 login.onclick = function(element) {
     chrome.tabs.update({
         url: authUrl
     });
-    chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-        let tab = tabs[0].url;
-        token = tab.substring(tab.indexOf('?') + 6, tab.indexOf('&'));
-        let check = tab.substring(tab.indexOf('&') + 7);
-        if (check !== state) {
-            bg.console.log('State is incorrect');
-            bg.console.log(check, '|', state);
-        }
-        chrome.storage.sync.set({code: token});
-        chrome.storage.sync.get('code', function(data) {
-            bg.console.log(data.code);
+
+    chrome.webNavigation.onCompleted.addListener(function() {
+        chrome.tabs.query({ currentWindow: true, active: true }, function(tabs) {
+            let tab = tabs[0].url;
+            token = tab.substring(tab.indexOf('?') + 6, tab.indexOf('&'));
+            let check = tab.substring(tab.indexOf('&') + 7);
+            if (check !== state) {
+                bg.console.log('State is incorrect');
+                bg.console.log(check, '|', state);
+            }
+            chrome.storage.sync.set({code: token});
+            chrome.storage.sync.set({status: state});
+            player();
         });
     });
+}
+
+function player() {
+    login.hidden = true;
+    bg.console.log(token);
 }
 
 function generateRandomString(length) {

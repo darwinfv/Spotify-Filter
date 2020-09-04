@@ -4,6 +4,12 @@ button {
     outline: none;
 }
 
+#login {
+    margin: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
 a {
     text-decoration: none;
     outline: none;
