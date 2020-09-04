@@ -1,15 +1,3 @@
-let changeColor = document.getElementById('changeColor');
-
-chrome.storage.sync.get('color', function(data) {
-    changeColor.style.backgroundColor = data.color;
-    changeColor.setAttribute('value', data.color);
-});
-
-
-
-
-
-
 const client_id = 'eea101d873434d49b7943928d46d0248';
 const client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580';
 const redirect_uri = 'https://infinite-mesa-97394.herokuapp.com/access';
@@ -30,7 +18,7 @@ let login = document.getElementById('login');
 
 chrome.storage.sync.get('code', function(data) {
     bg.console.log(data.code);
-    
+
 });
 
 login.onclick = function(element) {
@@ -49,23 +37,6 @@ login.onclick = function(element) {
         chrome.storage.sync.set({status: state});
     });
 }
-
-
-
-
-
-
-
-
-changeColor.onclick = function(element) {
-    let color = element.target.value;
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.executeScript(
-            tabs[0].id,
-            {code: 'document.body.style.backgroundColor = "' + color + '";'});
-    });
-};
-
 
 function generateRandomString(length) {
     var text = '';
