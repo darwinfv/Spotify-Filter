@@ -1,7 +1,7 @@
 const client_id = 'eea101d873434d49b7943928d46d0248';
 const client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580';
 const redirect_uri = 'https://infinite-mesa-97394.herokuapp.com/access';
-const scopes = 'user-read-private user-read-email user-read-currently-playing user-read-playback-state';
+const scopes = 'user-read-private user-read-email user-read-currently-playing user-read-playback-state playlist-read-private playlist-read-collaborative';
 
 const response_type = 'token';
 
