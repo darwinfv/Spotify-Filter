@@ -14,7 +14,5 @@ app.get('/', function(req, res) {
 });
 
 app.get('/access', function(req, res) {
-    let body = req.query;
-    console.log(body)
-    res.send(JSON.stringify(body));
+    res.send("Authentication completed. Redirecting...");
 });

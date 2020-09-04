@@ -3,3 +3,8 @@ button {
     width: 30px;
     outline: none;
 }
+
+a {
+    text-decoration: none;
+    outline: none;
+}
