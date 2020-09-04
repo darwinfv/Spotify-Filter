@@ -1,4 +1,5 @@
 chrome.runtime.onInstalled.addListener(function() {
+    chrome.storage.sync.clear();
     chrome.storage.sync.set({color: '#3aa757'});
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
         chrome.declarativeContent.onPageChanged.addRules([{
