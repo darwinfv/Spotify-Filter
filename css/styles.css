@@ -12,13 +12,16 @@ body {
     height: 30px;
     width: 30px;
     outline: none;
-    margin: 30px;
 }
 
 #login {
     margin: 25px;
     padding-left: 50px;
     padding-right: 50px;
+}
+
+#playlist {
+    margin: 25px;
 }
 
 a {
