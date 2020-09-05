@@ -1,3 +1,13 @@
+html {
+    height: 600px;
+    width: 600px;
+}
+
+body {
+    height: 600px;
+    width: 600px;
+}
+
 #color {
     height: 30px;
     width: 30px;
@@ -14,4 +24,9 @@
 a {
     text-decoration: none;
     outline: none;
+}
+
+.cover-img {
+    height: 128px;
+    width: 128px;
 }
