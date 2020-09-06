@@ -1,7 +1,7 @@
 const client_id = 'eea101d873434d49b7943928d46d0248';
 const client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580';
 const redirect_uri = 'https://infinite-mesa-97394.herokuapp.com/access';
-const scopes = 'user-read-private user-read-email user-read-currently-playing user-read-playback-state playlist-read-private playlist-read-collaborative';
+const scopes = 'user-read-private user-read-email user-read-currently-playing user-read-playback-state playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private';
 
 const response_type = 'token';
 
@@ -54,8 +54,22 @@ login.onclick = function (element) {
 
             chrome.storage.sync.set({code: token});
             chrome.storage.sync.set({status: state});
+            id();
             player();
         });
+    });
+}
+
+function id() {
+    const url = "https://api.spotify.com/v1/me";
+
+    fetch(url, {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(response => response.json()).then(function (data) {
+        chrome.storage.sync.set({id: data.id});
+        bg.console.log("Login successful");
     });
 }
 
@@ -71,7 +85,7 @@ function player() {
             'Authorization': 'Bearer ' + token
         }
     }).then(response => response.json()).then(function (data) {
-        bg.console.log(data.item);
+        // bg.console.log(data.item);
     });
 
 }
