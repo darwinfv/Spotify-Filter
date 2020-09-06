@@ -29,15 +29,15 @@ document.getElementById('playlist').onclick = function (element) {
 };
 
 prev.onclick = function (element) {
-    // TODO
+    page -= 2;
+    getPlaylists(page++ * 10);
 }
 
 next.onclick = function (element) {
-    // TODO
+    getPlaylists(page++ * 10);
 }
 
 function makePlaylist (index) {
-    bg.console.log("succ");
     let items = document.getElementsByClassName('cover-btn');
     let name = items[index].innerHTML;
     let pid = items[index].value;
@@ -97,12 +97,10 @@ function getPlaylists(offset = 0, limit = 10) {
             total = data.total;
             page = 1;
             prev.disabled = true;
-            if (total > 10) {
-                next.disabled = false;
-            } else {
-                next.disabled = true;
-            }
+        } else {
+            prev.disabled = false;
         }
+        next.disabled = total > (offset + 1) * 10 ? false : true;
 
         let items = data.items;
         let imgs = document.getElementsByClassName('cover-img');
@@ -115,6 +113,13 @@ function getPlaylists(offset = 0, limit = 10) {
             btns[i].addEventListener("click", function () {
                 makePlaylist(i);
             });
+            imgs[i].hidden = false;
+            btns[i].hidden = false;
+        }
+        
+        for (let i = items.length; i < 10; i++) {
+            imgs[i].hidden = true;
+            btns[i].hidden = true;
         }
         
     });

@@ -85,7 +85,7 @@ function player() {
             'Authorization': 'Bearer ' + token
         }
     }).then(response => response.json()).then(function (data) {
-        // bg.console.log(data.item);
+        bg.console.log(data.item);
     });
 
 }
