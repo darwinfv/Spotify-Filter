@@ -29,7 +29,20 @@ a {
     outline: none;
 }
 
+.cover {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.title {
+    text-align: center;
+}
+
 .cover-img {
     height: 128px;
     width: 128px;
+}
+
+#back, #prev, #next {
+    margin-bottom: 30px;
 }
