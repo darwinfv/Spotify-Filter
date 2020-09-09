@@ -16,3 +16,23 @@ chrome.runtime.onInstalled.addListener(function () {
         }]);
     });
 });
+
+// chrome.webNavigation.onCompleted.addListener(function () {
+    
+//     chrome.tabs.query({ currentWindow: true, active: true }, function(tabs) {
+//         let tab = tabs[0];
+//         let url = new URL(tab.url);
+//         let domain = url.hostname;
+
+//         chrome.tabs.executeScript(tab.id, {
+//             code: 'chrome.declarativeContent.onPageChanged.addRules([{ \
+//                         conditions: [new chrome.declarativeContent.PageStateMatcher({ \
+//                             pageUrl: {hostEquals: ' + domain + '}, \
+//                         })], \
+//                         actions: [new chrome.declarativeContent.ShowPageAction()] \
+//                     }]);'
+//         });
+
+//     });
+
+// });
