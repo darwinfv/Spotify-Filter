@@ -19,9 +19,9 @@ let authUrl = 'https://accounts.spotify.com/authorize' +
 let login = document.getElementById('login');
 let img = document.getElementById('player-img');
 let info = document.getElementById('player-info');
+let play = document.getElementById('player');
 
 chrome.storage.sync.get('code', function (data) {
-    bg.console.log("checking toke");
     if (data.code) {
         token = data.code;
         player();
@@ -80,24 +80,31 @@ function id() {
 function player() {
     login.hidden = true;
 
-    const url = 'https://api.spotify.com/v1/me/player/currently-playing';
-
-    fetch(url, {
-        headers: {
-            'Authorization': 'Bearer ' + token
-        }
-    }).then(function (resp) {
-        if (resp.status == 204) {
-            recentlyPlayed();
+    chrome.storage.sync.get(['image', 'names'], function (data) {
+        if (data.image && data.names) {
+            img.src = data.image;
+            info.innerHTML = data.names;
+            play.hidden = false;
         } else {
-            resp.json().then(data => bg.console.log(data));
-        //     resp.json().then(function (value) {
-        //         let data = value.item;
-        //         bg.console.log(value);
-        //     });
+            const url = 'https://api.spotify.com/v1/me/player/currently-playing';
+
+            fetch(url, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then(function (resp) {
+                if (resp.status == 204) {
+                    recentlyPlayed();
+                } else {
+                    resp.json().then(data => bg.console.log(data));
+                //     resp.json().then(function (value) {
+                //         let data = value.item;
+                //         bg.console.log(value);
+                //     });
+                }
+            });
         }
     });
-
 }
 
 function recentlyPlayed() {
@@ -114,7 +121,9 @@ function buildPlayer(data) {
     info.innerHTML = '<b>' + data.name + '</b><br>';
     data.artists.forEach(element => info.innerHTML += element.name + ", ");
     info.innerHTML = info.innerHTML.substring(0, info.innerHTML.length - 2);
-    document.getElementById('player').hidden = false;
+    play.hidden = false;
+    chrome.storage.sync.set({image: img.src});
+    chrome.storage.sync.set({names: info.innerHTML});
 }
 
 async function fetchAsync (url) {
