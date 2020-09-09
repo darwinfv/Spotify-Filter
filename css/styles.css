@@ -29,7 +29,7 @@ a {
     outline: none;
 }
 
-.cover {
+.cover, #player {
     margin-top: 30px;
     margin-bottom: 30px;
 }
@@ -38,7 +38,7 @@ a {
     text-align: center;
 }
 
-.cover-img {
+.cover-img, #player-img {
     height: 128px;
     width: 128px;
 }

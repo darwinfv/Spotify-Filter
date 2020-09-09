@@ -1,7 +1,7 @@
 const client_id = 'eea101d873434d49b7943928d46d0248';
 const client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580';
 const redirect_uri = 'https://infinite-mesa-97394.herokuapp.com/access';
-const scopes = 'user-read-private user-read-email user-read-currently-playing user-read-playback-state playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private';
+const scopes = 'user-read-recently-played user-read-private user-read-email user-read-currently-playing user-read-playback-state playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private';
 
 const response_type = 'token';
 
@@ -17,9 +17,13 @@ let authUrl = 'https://accounts.spotify.com/authorize' +
     '&scope=' + scopes;
 
 let login = document.getElementById('login');
+let img = document.getElementById('player-img');
+let info = document.getElementById('player-info');
 
 chrome.storage.sync.get('code', function (data) {
+    bg.console.log("checking toke");
     if (data.code) {
+        token = data.code;
         player();
     }
 });
@@ -78,8 +82,6 @@ function player() {
 
     const url = 'https://api.spotify.com/v1/me/player/currently-playing';
 
-    // bg.console.log(fetchAsync(url));
-
     fetch(url, {
         headers: {
             'Authorization': 'Bearer ' + token
@@ -87,30 +89,32 @@ function player() {
     }).then(function (resp) {
         if (resp.status == 204) {
             recentlyPlayed();
+        } else {
+            resp.json().then(data => bg.console.log(data));
+        //     resp.json().then(function (value) {
+        //         let data = value.item;
+        //         bg.console.log(value);
+        //     });
         }
-        bg.console.log(resp);
     });
 
 }
 
 function recentlyPlayed() {
-    const url = 'https://api.spotify.com/v1/me/player/recently-played';
-
-    fetch(url, {
-
+    const url = 'https://api.spotify.com/v1/me/player/recently-played?limit=1';
+    let data = fetchAsync(url);
+    data.then(function (res) {
+        buildPlayer(res.items[0].track);
     })
+
 }
 
-function fetchResponse(url) {
-    fetch(url, {
-        headers: {
-            'Authorization': 'Bearer ' + token
-        }
-    }).then(response => { return response; });
-}
-
-function getBody(response) {
-    return response.json();
+function buildPlayer(data) {
+    img.src = data.album.images[0].url;
+    info.innerHTML = '<b>' + data.name + '</b><br>';
+    data.artists.forEach(element => info.innerHTML += element.name + ", ");
+    info.innerHTML = info.innerHTML.substring(0, info.innerHTML.length - 2);
+    document.getElementById('player').hidden = false;
 }
 
 async function fetchAsync (url) {
