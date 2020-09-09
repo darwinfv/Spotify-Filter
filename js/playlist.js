@@ -50,16 +50,6 @@ function makePlaylist (index) {
         'public': 'private'
     };
 
-    fetch("https://api.spotify.com/v1/users/qn5qq8divhd3nw86yjkuywqus/playlists", {
-        body: "{\"name\\\":\\\"New Playlist\\\",\\\"description\\\":\\\"New playlist description\\\",\\\"public\\\":false}",
-        headers: {
-            "Accept": "application/json",
-            "Authorization": "Bearer " + code,
-            "Content-Type": "application/json"
-        },
-        method: "POST"
-    }).then(response => response.json()).then(data => bg.console.log(data));
-
     postData(createUrl, createBody).then(data => bg.console.log(data));
 }
 
