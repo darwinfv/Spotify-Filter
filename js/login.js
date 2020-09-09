@@ -80,28 +80,27 @@ function id() {
 function player() {
     login.hidden = true;
 
-    chrome.storage.sync.get(['image', 'names'], function (data) {
-        if (data.image && data.names) {
-            img.src = data.image;
-            info.innerHTML = data.names;
-            play.hidden = false;
-        } else {
-            const url = 'https://api.spotify.com/v1/me/player/currently-playing';
+    const url = 'https://api.spotify.com/v1/me/player/currently-playing';
 
-            fetch(url, {
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
-            }).then(function (resp) {
-                if (resp.status == 204) {
-                    recentlyPlayed();
+    fetch(url, {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(function (resp) {
+        if (resp.status == 204) {
+            chrome.storage.sync.get(['image', 'names'], function (data) {
+                if (data.image && data.names) {
+                    img.src = data.image;
+                    info.innerHTML = data.names;
+                    play.hidden = false;
                 } else {
-                    resp.json().then(data => bg.console.log(data));
-                //     resp.json().then(function (value) {
-                //         let data = value.item;
-                //         bg.console.log(value);
-                //     });
+                    recentlyPlayed();
                 }
+            });
+        } else {
+            resp.json().then(function (value) {
+                let data = value.item;
+                buildPlayer(data, false);
             });
         }
     });
@@ -111,19 +110,23 @@ function recentlyPlayed() {
     const url = 'https://api.spotify.com/v1/me/player/recently-played?limit=1';
     let data = fetchAsync(url);
     data.then(function (res) {
-        buildPlayer(res.items[0].track);
+        buildPlayer(res.items[0].track, true);
     })
 
 }
 
-function buildPlayer(data) {
+function buildPlayer(data, store) {
     img.src = data.album.images[0].url;
     info.innerHTML = '<b>' + data.name + '</b><br>';
     data.artists.forEach(element => info.innerHTML += element.name + ", ");
     info.innerHTML = info.innerHTML.substring(0, info.innerHTML.length - 2);
     play.hidden = false;
-    chrome.storage.sync.set({image: img.src});
-    chrome.storage.sync.set({names: info.innerHTML});
+    if (store) {
+        chrome.storage.sync.set({image: img.src});
+        chrome.storage.sync.set({names: info.innerHTML});
+    } else {
+        chrome.storage.sync.remove(['iamge', 'names']);
+    }
 }
 
 async function fetchAsync (url) {
