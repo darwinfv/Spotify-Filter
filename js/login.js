@@ -84,10 +84,33 @@ function player() {
         headers: {
             'Authorization': 'Bearer ' + token
         }
-    }).then(response => response.json()).then(function (data) {
-        bg.console.log(data.item);
+    }).then(function (resp) {
+        if (resp.status == 204) {
+            recentlyPlayed();
+        }
+        bg.console.log(resp);
     });
 
+}
+
+function recentlyPlayed() {
+    const url = 'https://api.spotify.com/v1/me/player/recently-played';
+
+    fetch(url, {
+
+    })
+}
+
+function fetchResponse(url) {
+    fetch(url, {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(response => { return response; });
+}
+
+function getBody(response) {
+    return response.json();
 }
 
 async function fetchAsync (url) {
