@@ -144,6 +144,9 @@ function getPlaylists(offset = 0, limit = 10) {
             btns[i].hidden = true;
         }
         
+    }).catch(function (error) {
+        // main.hidden = true;
+        location.reload();
     });
 
 }
