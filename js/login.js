@@ -171,8 +171,9 @@ function checkExplicit() {
         if (resp.status == 200) {
             resp.json().then(function (value) {
                 if (value.item.explicit) {
-                    skipSong();
-                    checkExplicit();
+                    if (!skipSong()) {
+                        checkExplicit();
+                    }
                 }
             });
         }
@@ -184,7 +185,12 @@ function skipSong() {
     xhr.open("POST", 'https://api.spotify.com/v1/me/player/next', true);
     xhr.setRequestHeader('Authorization', 'Bearer ' + token);
     xhr.send();
-    xhr.onload = function() {
-        bg.console.log(this.responseText);
+    return xhr.onload = function() {
+        let data = this.responseText;
+        bg.console.log(data);
+        if (data.status) {
+            return true;
+        }
+        return false;
     }
 }
