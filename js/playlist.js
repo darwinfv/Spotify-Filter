@@ -46,26 +46,29 @@ function makePlaylist (index) {
 
     const createUrl = 'https://api.spotify.com/v1/users/' + id + '/playlists';
     let createBody = {
-        'name': name,
-        'public': 'private'
+        'name': name
     };
 
-    postData(createUrl, createBody).then(data => bg.console.log(data));
+    const playUrl = 'https://api.spotify.com/v1/playlists/' + pid
+    let playBody = {
+        
+    }
+
+    let xhr = postData(createUrl, createBody);
+    xhr.onload = function() {
+        let data = JSON.parse(this.responseText);
+        bg.console.log(data);
+    }
 }
 
-async function postData(url, data) {
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + code,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data),
-        json: true,
-        dataType: 'json',
-    });
-    return response.json();
+function postData(url, data) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Authorization', 'Bearer ' + code);
+    xhr.send(JSON.stringify(data));
+    return xhr;
+
 }
 
 let total;
@@ -97,7 +100,7 @@ function getPlaylists(offset = 0, limit = 10) {
         let btns = document.getElementsByClassName('cover-btn');
         
         for (let i = 0; i < items.length; i++) {
-            imgs[i].src = items[i].images[0].url;
+            imgs[i].src = items[i].images.length > 0 ? items[i].images[0].url : imgs[i].src;
             btns[i].innerHTML = items[i].name;
             btns[i].value = items[i].id;
             btns[i].addEventListener("click", function () {
