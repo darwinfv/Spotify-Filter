@@ -56,9 +56,7 @@ function makePlaylist (index) {
     xhr.onload = function() {
         let data = JSON.parse(this.responseText);
         let nid = data.id + '/tracks';
-
         setof100(playUrl, nid);
-
     }
 }
 
