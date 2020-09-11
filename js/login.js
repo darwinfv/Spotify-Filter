@@ -38,7 +38,7 @@ login.onclick = function (element) {
     });
 
     chrome.webNavigation.onCompleted.addListener(function () {
-        chrome.tabs.query({ currentWindow: true, active: true }, function( tabs) {
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
             let tab = tabs[0].url;
             if (tab.includes("?error=")) {
                 bg.console.log("Error while attempting login:", tab.substring(tab.indexOf('?') + 7, tab.indexOf('&')));
