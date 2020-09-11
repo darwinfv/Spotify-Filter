@@ -49,16 +49,47 @@ function makePlaylist (index) {
         'name': name
     };
 
-    const playUrl = 'https://api.spotify.com/v1/playlists/' + pid
-    let playBody = {
-        
-    }
-
+    let playUrl = 'https://api.spotify.com/v1/playlists/' + pid + '/tracks?' +
+        'fields=next,items(track(uri)),items(track(explicit))';
+    
     let xhr = postData(createUrl, createBody);
     xhr.onload = function() {
         let data = JSON.parse(this.responseText);
-        bg.console.log(data);
+        let nid = data.id + '/tracks';
+
+        setof100(playUrl, nid);
+
     }
+}
+
+const addUrl = 'https://api.spotify.com/v1/playlists/';
+
+function addSongs(items, nid) {
+
+    let uris = [];
+
+    for (let i = 0 ; i < items.length; i++) {
+        if (!items[i].track.explicit) {
+            uris.push(items[i].track.uri)
+        }
+    }
+
+    let xhr = postData(addUrl + nid, {'uris': uris});
+
+}
+
+function setof100(playUrl, nid) {
+    fetch(playUrl, {
+        headers: {
+            'Authorization': 'Bearer ' + code,
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json()).then(function (data2) {
+        addSongs(data2.items, nid);
+        if (data2.next != null) {
+            setof100(data2.next, nid);
+        }
+    });
 }
 
 function postData(url, data) {
