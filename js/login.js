@@ -1,7 +1,7 @@
 const client_id = 'eea101d873434d49b7943928d46d0248';
 const client_secret = 'ca1a878a6bda4bd1ac50513c14ae5580';
 const redirect_uri = 'https://infinite-mesa-97394.herokuapp.com/access';
-const scopes = 'user-read-recently-played user-read-private user-read-email user-read-currently-playing user-read-playback-state playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private';
+const scopes = 'user-modify-playback-state user-read-recently-played user-read-private user-read-email user-read-currently-playing user-read-playback-state playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private';
 
 const response_type = 'token';
 
@@ -20,6 +20,10 @@ let login = document.getElementById('login');
 let img = document.getElementById('player-img');
 let info = document.getElementById('player-info');
 let play = document.getElementById('player');
+
+const playerUrl = 'https://api.spotify.com/v1/me/player/currently-playing';
+
+let timer;
 
 chrome.storage.sync.get('code', function (data) {
     if (data.code) {
@@ -80,9 +84,7 @@ function id() {
 function player() {
     login.hidden = true;
 
-    const url = 'https://api.spotify.com/v1/me/player/currently-playing';
-
-    fetch(url, {
+    fetch(playerUrl, {
         headers: {
             'Authorization': 'Bearer ' + token
         }
@@ -97,11 +99,13 @@ function player() {
                     recentlyPlayed();
                 }
             });
-        } else {
+        } else if (resp.status == 200) {
             resp.json().then(function (value) {
                 let data = value.item;
                 buildPlayer(data, false);
             });
+        } else {
+            login.hidden = false;
         }
     });
 }
@@ -148,3 +152,39 @@ function generateRandomString (length) {
     }
     return text;
 };
+
+$('#check').on('click', function(e) {
+    if ($('#check:checked').val() == 'filter') {
+        checkExplicit();
+        setInterval(checkExplicit, 1000 * 60);
+    } else {
+        clearInterval(timer);
+    }
+});
+
+function checkExplicit() {
+    fetch(playerUrl, {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(function (resp) {
+        if (resp.status == 200) {
+            resp.json().then(function (value) {
+                if (value.item.explicit) {
+                    skipSong();
+                    checkExplicit();
+                }
+            });
+        }
+    });
+}
+
+function skipSong() {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", 'https://api.spotify.com/v1/me/player/next', true);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+    xhr.send();
+    xhr.onload = function() {
+        bg.console.log(this.responseText);
+    }
+}
