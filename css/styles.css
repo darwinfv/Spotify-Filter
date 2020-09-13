@@ -12,6 +12,7 @@ body {
     height: 30px;
     width: 30px;
     outline: none;
+    margin: 20px;
 }
 
 #login {
@@ -22,6 +23,12 @@ body {
 
 #playlist {
     margin: 25px;
+}
+
+#lyrics {
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 25px;
 }
 
 a {
